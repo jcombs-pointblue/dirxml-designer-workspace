@@ -24,6 +24,10 @@ ln -s /tmp/dxw/skills/dirxml-designer-workspace ~/.claude/skills/dirxml-designer
 
 Restart your `claude` session and ask it about a Designer workspace.
 
+### Other LLMs (GPT, Gemini, local models, anything with a file-reading agent)
+
+The bare skill is just Markdown — `skills/dirxml-designer-workspace/SKILL.md` plus the `references/` and `examples/` files it points at. Any model with access to read files can use it: point your agent framework at that directory, load `SKILL.md` into the system prompt or as retrievable context, and let the model open the reference files on demand. There's nothing Claude-specific in the content itself; the frontmatter is ignored by non-Claude runtimes.
+
 ## What's in here
 
 ```
