@@ -4,6 +4,12 @@ A Claude plugin that lets Claude read and describe **NetIQ / OpenText Identity M
 
 It spares Claude from re-deriving the Designer file layout, object model, and policy grammar from first principles every session, so you can point it at a workspace and immediately ask things like *"what does this driver do?"*, *"summarize the Subscriber policies"*, *"which entitlements does it expose?"*
 
+## The headline use case: semantic comparison of driver or project versions
+
+Text-based `diff` on a Designer workspace is nearly useless. Object IDs, relation orderings, and timestamps churn between exports, so a diff buries the real changes under noise. Dropping two workspaces (or two drivers) in front of an agent that understands the object model inverts that: instead of *"line 47 changed,"* you get *"the Subscriber Event Transformation in dev has an extra rule that vetoes User modifies when the IG sync mode GCV is enabled,"* *"the prod filter still notifies on `DirXML-EntitlementRef` but dev was switched to sync,"* or *"the `SafePermission` entitlement's query was changed from multi-value union to multi-value merge."*
+
+This is the kind of comparison IDM consultants do constantly — non-prod vs prod before a promotion, two customer tenants looking for configuration drift, a pre-upgrade snapshot against the post-upgrade workspace, a package version compared to what's actually deployed. Previously that meant eyeballing Designer side-by-side for hours. An agent with this skill can do it in one pass and tell you what matters.
+
 ## Install
 
 ### Claude Cowork mode
