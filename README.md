@@ -18,9 +18,16 @@ Download the latest `.plugin` file from [Releases](https://github.com/jcombs-poi
 
 ### Claude Code (CLI)
 
-Install as a plugin with the `/plugin` command inside a `claude` session, pointing at this repo.
+The repo ships a marketplace manifest (`.claude-plugin/marketplace.json`), so you can add it as a plugin marketplace and install from there inside a `claude` session:
 
-Or, to use just the skill without the plugin wrapper, clone and symlink (or copy) the inner skill directory:
+```
+/plugin marketplace add jcombs-pointblue/dirxml-designer-workspace
+/plugin install dirxml-designer-workspace@pointblue
+```
+
+Or install the plugin directly from the repo with the `/plugin` command.
+
+To use just the skill without the plugin wrapper, clone and symlink (or copy) the inner skill directory:
 
 ```bash
 git clone https://github.com/jcombs-pointblue/dirxml-designer-workspace.git /tmp/dxw
