@@ -1,0 +1,11 @@
+{
+  "name": "pointblue",
+  "owner": { "name": "Jerry Combs" },
+  "plugins": [
+    {
+      "name": "dirxml-designer-workspace",
+      "source": "./",
+      "description": "NetIQ/OpenText IDM Designer workspace reader"
+    }
+  ]
+}
