@@ -1,6 +1,6 @@
 {
   "name": "dirxml-designer-workspace",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Claude skill for reading and describing NetIQ / OpenText Identity Manager Designer workspaces — DirXML drivers, policies, filters, entitlements, packages, Identity Vault schema, and User Application / RBPM provisioning.",
   "author": {
     "name": "Jerry Combs"
