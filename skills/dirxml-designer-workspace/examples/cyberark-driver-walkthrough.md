@@ -35,7 +35,7 @@ The per-server values live inside `<associatedAttrSets objectURI="EdirOrphan/1DE
 
 `DirXML-ShimConfigInfo` holds a nested `<driver-config>` XML blob (as CDATA). Key values:
 
-- `authScope=oauth-scope` — OAuth scope.
+- `authScope=<oauth-scope>` — OAuth scope.
 - `directorySourcedUsers=true` — CyberArk users come from AD, not created fresh.
 - `domainName=example.com` — the AD domain as CyberArk stores it.
 - `dummySafeName=IGA-TEST1` — dummy safe used to activate new CyberArk users.
@@ -220,7 +220,7 @@ The DriverSet's `Idm:InstalledPackages` relations enumerate every vendor/partner
 
 ## 11. How to describe this driver in one paragraph
 
-> The **CyberArk** driver (`9HPNAS5Y`, shim `com.pointbluetech.idm.cyberark.scim.CyberarkShim`) is a subscriber-only SCIM provisioner targeting the CyberArk Identity SCIM endpoint under OAuth scope `oauth-scope`. It expects CyberArk users to be created from AD (`directorySourcedUsers=true`) and completes activation by auto-assigning the AD Group entitlement `system\driverset1\Active Directory Driver\Group` (GUID redacted). The Subscriber filter passes `User` and `Group` events only; the schema map translates NDS names to SCIM attribute paths. Four dynamic entitlements are exposed: `SafePermission`, `Entitlement` (legacy), `Group`, and `UserAccount`. Event-transform policies include an IG-only kill switch (`drv.ig.enable.sync.only.mode` GCV) that vetoes User mutations while Identity Governance is cold-loading. Publisher is present but empty — no inbound sync from CyberArk.
+> The **CyberArk** driver (`9HPNAS5Y`, shim `com.pointbluetech.idm.cyberark.scim.CyberarkShim`) is a subscriber-only SCIM provisioner targeting the CyberArk Identity SCIM endpoint under its configured OAuth scope. It expects CyberArk users to be created from AD (`directorySourcedUsers=true`) and completes activation by auto-assigning the AD Group entitlement `system\driverset1\Active Directory Driver\Group` (GUID redacted). The Subscriber filter passes `User` and `Group` events only; the schema map translates NDS names to SCIM attribute paths. Four dynamic entitlements are exposed: `SafePermission`, `Entitlement` (legacy), `Group`, and `UserAccount`. Event-transform policies include an IG-only kill switch (`drv.ig.enable.sync.only.mode` GCV) that vetoes User mutations while Identity Governance is cold-loading. Publisher is present but empty — no inbound sync from CyberArk.
 
 That paragraph is what a "document this driver" request should produce. It pulls from: Driver metadata, relations graph, filter, schema map, entitlements, a single telltale policy rule, and the DriverSet-level feature flag.
 
