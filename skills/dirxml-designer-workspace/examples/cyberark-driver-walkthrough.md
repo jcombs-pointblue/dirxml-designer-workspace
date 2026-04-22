@@ -25,9 +25,9 @@ From `9HPNAS5Y.Driver_`:
 - `DirXML-JavaModule=com.pointbluetech.idm.cyberark.scim.CyberarkShim` — Point Blue's SCIM shim, not a stock OpenText one.
 - `DirXML-DriverStartOption=1` — manual start.
 - `DirXML-TraceFile=/opt/novell/trace/ca/ca.trace`, `DirXML-TraceLevel=10`, `DirXML-TraceName=CyberArk`.
-- `DirXML-ShimAuthServer=https://example-tenant.id.cyberark.cloud`
-- `DirXML-ShimAuthID=service-account@cyberark.cloud.tenant-id` (per-server; under `associatedAttrSets objectURI="EdirOrphan/1DE5WUEO.Server_"`)
-- `DirXML-ShimAuthPassword=^[]REDACTED…==` (obfuscated per-server value)
+- `DirXML-ShimAuthServer=https://<tenant>.id.cyberark.cloud`
+- `DirXML-ShimAuthID=<service-account>@cyberark.cloud.<tenant-id>` (per-server; under `associatedAttrSets objectURI="EdirOrphan/1DE5WUEO.Server_"`)
+- `DirXML-ShimAuthPassword=<eDirectory-encrypted value>` (per-server, never in plain text)
 
 The per-server values live inside `<associatedAttrSets objectURI="EdirOrphan/1DE5WUEO.Server_">` — that's the pattern whenever a driver attribute varies by engine.
 
@@ -39,7 +39,7 @@ The per-server values live inside `<associatedAttrSets objectURI="EdirOrphan/1DE
 - `directorySourcedUsers=true` — CyberArk users come from AD, not created fresh.
 - `domainName=example.com` — the AD domain as CyberArk stores it.
 - `dummySafeName=IGA-TEST1` — dummy safe used to activate new CyberArk users.
-- `setGroupMembership=true` / `cyberArkGroupGuid=redacted-guid` / `cyberArkGroupEntDN=system\driverset1\Active Directory Driver\Group` — after a user is created, the driver auto-assigns this AD group entitlement to push activation.
+- `setGroupMembership=true` / `cyberArkGroupGuid=<redacted-32-hex-guid>` / `cyberArkGroupEntDN=system\driverset1\Active Directory Driver\Group` — after a user is created, the driver auto-assigns this AD group entitlement to push activation.
 - `provisionCyberArkADGroup=true`, `retryOnUserActivation=true`.
 - Publisher: `pub-heartbeat-interval=1`, `polling-interval=1` (minutes).
 
@@ -220,7 +220,7 @@ The DriverSet's `Idm:InstalledPackages` relations enumerate every vendor/partner
 
 ## 11. How to describe this driver in one paragraph
 
-> The **CyberArk** driver (`9HPNAS5Y`, shim `com.pointbluetech.idm.cyberark.scim.CyberarkShim`) is a subscriber-only SCIM provisioner targeting `https://example-tenant.id.cyberark.cloud` under OAuth scope `SCIMIGA`. It expects CyberArk users to be created from AD (`directorySourcedUsers=true`) and completes activation by auto-assigning the AD Group entitlement `system\driverset1\Active Directory Driver\Group` (GUID `redacted…`). The Subscriber filter passes `User` and `Group` events only; the schema map translates NDS names to SCIM attribute paths. Four dynamic entitlements are exposed: `SafePermission`, `Entitlement` (legacy), `Group`, and `UserAccount`. Event-transform policies include an IG-only kill switch (`drv.ig.enable.sync.only.mode` GCV) that vetoes User mutations while Identity Governance is cold-loading. Publisher is present but empty — no inbound sync from CyberArk.
+> The **CyberArk** driver (`9HPNAS5Y`, shim `com.pointbluetech.idm.cyberark.scim.CyberarkShim`) is a subscriber-only SCIM provisioner targeting `https://<tenant>.id.cyberark.cloud` under OAuth scope `SCIMIGA`. It expects CyberArk users to be created from AD (`directorySourcedUsers=true`) and completes activation by auto-assigning the AD Group entitlement `system\driverset1\Active Directory Driver\Group` (GUID redacted). The Subscriber filter passes `User` and `Group` events only; the schema map translates NDS names to SCIM attribute paths. Four dynamic entitlements are exposed: `SafePermission`, `Entitlement` (legacy), `Group`, and `UserAccount`. Event-transform policies include an IG-only kill switch (`drv.ig.enable.sync.only.mode` GCV) that vetoes User mutations while Identity Governance is cold-loading. Publisher is present but empty — no inbound sync from CyberArk.
 
 That paragraph is what a "document this driver" request should produce. It pulls from: Driver metadata, relations graph, filter, schema map, entitlements, a single telltale policy rule, and the DriverSet-level feature flag.
 
