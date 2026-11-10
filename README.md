@@ -10,6 +10,8 @@ Text-based `diff` on a Designer workspace is nearly useless. Object IDs, relatio
 
 This is the kind of comparison IDM consultants do constantly — non-prod vs prod before a promotion, two customer tenants looking for configuration drift, a pre-upgrade snapshot against the post-upgrade workspace, a package version compared to what's actually deployed. Previously that meant eyeballing Designer side-by-side for hours. An agent with this skill can do it in one pass and tell you what matters.
 
+When you need the comparison to be exact and repeatable, not just readable, see [Comparing, validating or changing a project](#comparing-validating-or-changing-a-project-dirxmldev) below.
+
 ## Install
 
 ### Claude Cowork mode
@@ -63,6 +65,21 @@ dirxml-designer-workspace/
 ## Scope
 
 Read-and-describe only. The skill will help you document, summarize, or answer questions about a workspace. It does **not** modify Designer files — non-trivial edits really want to be done in Designer itself so IDs, BackReferences, and the Modeler graph stay consistent.
+
+## Comparing, validating or changing a project: DirXMLDev
+
+This skill reads and explains. For work that has to be exact, or that changes the project, use [DirXMLDev](https://github.com/PointBlueTechnology/DirXMLDev). It's an open-source command-line tool (MIT) that turns a Designer project into plain files, an IDM-as-code tree, and works on those:
+
+- **Compare two projects.** Import each one, then diff the trees. The diff lists every difference driver by driver, and gives the same answer every time:
+  ```bash
+  bin/idm import-project ~/designer_workspace/ProjectQA qa
+  bin/idm import-project ~/designer_workspace/ProjectPROD prod
+  bin/idm tree.diff prod qa
+  ```
+- **Validate.** `bin/idm validate qa` checks links, GCVs and mapping tables, and compiles each policy with the engine's own compilers. That last check needs the engine jars from your Identity Manager installation.
+- **Change it.** Edit the tree, then deploy it to an Identity Vault with `bin/idm vault.deploy`, or write the change back into the Designer project with `bin/idm export-project qa ~/designer_workspace/ProjectQA`. `export-project` writes only the files the change needs. It handles drivers that weren't installed from packages; for a packaged driver, deploy to a vault and use Designer's *Import from the Identity Vault*.
+
+The two work well together. Let the agent use this skill to explain what a driver does, and DirXMLDev for the diff, the checks and the edits. DirXMLDev needs JDK 21; see its [install guide](https://github.com/PointBlueTechnology/DirXMLDev/blob/master/docs/install.md). [DirXMLDevWeb](https://github.com/PointBlueTechnology/DirXMLDevWeb) puts the same tools in a browser.
 
 ## Triggers
 
